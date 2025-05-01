@@ -1,0 +1,39 @@
+-- Restaurant Order Analysis Project
+-- SQL queries for order trends and performance insights
+
+
+
+
+-- Which orders had the most number of items?
+
+select order_id, count(item_id) as num_items
+from order_details
+group by order_id
+order by num_items desc;
+
+
+-- What were the least and most ordered items? What categories were they in?
+
+select item_name , count(order_details_id) as num_purchases, category
+from order_details left join menu_items on order_details.item_id = menu_items.menu_item_id
+group by item_name, category
+order by num_purchases desc;
+
+
+-- What were the top 5 orders that spent the most money?
+
+select order_id,sum(price) as total_spend
+from order_details
+left join menu_items on order_details.item_id = menu_items.menu_item_id
+group by order_id
+order by total_spend desc
+limit 5;
+
+
+-- View the details of the highest spend order. Which specific items were purchased?
+
+select category, count(item_id) as num_item
+from order_details
+left join menu_items on order_details.item_id = menu_items.menu_item_id
+where order_id = 440
+group by category;
